@@ -8,7 +8,7 @@
 
 // EDIT ME: replace with your real Formspree form ID (get one free at formspree.io,
 // then paste the ID from your form's endpoint URL here).
-const FORMSPREE_ID = "xzeejnld";
+const FORMSPREE_ID = "xnppgekr";
 
 (function () {
   const form = document.getElementById("contact-form");
