@@ -1,15 +1,14 @@
 /*
   repos.js
   The single source of truth for the repo list shown on the site.
-  This plain fallback list reads from this REPOS array — it's the only
-  repo UI on the site now (no 3D nodes).
+  The page currently only displays each repo's name as a link (see
+  globe.js), but brief/lang are kept here too in case the list ever needs
+  to show more than just the name again.
 */
 
 // EDIT ME: add/remove repo entries here. Each one looks like:
 // { name: "repo-name", brief: "short description", url: "https://github.com/...", lang: "Python" }
-// Entries pulled straight from github.com/jtminer45 — several repos have no
-// description set on GitHub yet, so their "brief" below is a placeholder.
-// EDIT ME: replace each placeholder brief with a real one-line description.
+// Entries pulled straight from github.com/jtminer45.
 window.REPOS = [
   {
     name: "microwave-quant",

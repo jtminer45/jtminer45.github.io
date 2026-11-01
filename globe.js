@@ -7,8 +7,8 @@
 
 (function () {
   // ----- Render the repo list from repos.js -----
-  // Each repo is one big clickable link (name, brief, and language) that
-  // opens its GitHub page in a new tab.
+  // Each repo is one clickable link — just its name — that opens its
+  // GitHub page in a new tab.
   function renderRepoList() {
     const list = document.getElementById("repo-list");
     if (!list || !window.REPOS) return;
@@ -21,14 +21,7 @@
       link.href = repo.url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-
-      const title = document.createElement("strong");
-      title.textContent = repo.name + " ";
-      link.appendChild(title);
-
-      link.appendChild(
-        document.createTextNode("— " + repo.brief + " (" + repo.lang + ")")
-      );
+      link.textContent = repo.name;
 
       item.appendChild(link);
       list.appendChild(item);
