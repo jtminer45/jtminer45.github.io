@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+  index.html
+  This is the page structure (the "skeleton") for the whole site.
+  It holds: the intro screen, the header, the main content sections
+  (about/bio, the 3D globe + repo list, and the contact form), and the footer.
+  All real styling lives in style.css. All behavior lives in the .js files,
+  loaded at the bottom of this file.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to My World — Jonathan Miner</title>
+
+  <!-- JetBrains Mono font, used everywhere for the terminal feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===================== INTRO SCREEN ===================== -->
+  <!-- Full-black overlay that types "> welcome to my world_" then glitches away.
+       intro.js controls showing/hiding this. Hidden immediately (via JS) on repeat visits. -->
+  <div id="intro-screen" class="intro-screen">
+    <p id="intro-text" class="intro-text" aria-live="polite"></p>
+    <button id="intro-skip" class="intro-skip">skip</button>
+  </div>
+
+  <!-- ===================== MAIN SITE ===================== -->
+  <!-- Hidden until the intro finishes (or is skipped). -->
+  <div id="main-content" class="main-content" hidden>
+
+    <!-- ----- Header ----- -->
+    <header class="site-header">
+      <p class="logo">&gt; jonathan_miner</p>
+      <!-- EDIT ME: change nav links if you add/remove sections -->
+      <nav class="site-nav">
+        <a href="#about">about</a>
+        <a href="#world">world</a>
+        <a href="#contact">contact</a>
+      </nav>
+    </header>
+
+    <!-- ----- Hero ----- -->
+    <section id="hero" class="hero">
+      <h1 class="hero-title">welcome to my world_</h1>
+      <p class="hero-sub">maths &amp; computer science grad — Jos, Nigeria</p>
+    </section>
+
+    <!-- ----- About / Bio (filled in Stage 4) ----- -->
+    <section id="about" class="about">
+      <h2 class="section-title">&gt; about</h2>
+      <p class="bio-text">
+        <!-- EDIT ME: bio text added in Stage 4 -->
+      </p>
+      <!-- EDIT ME: social links added in Stage 4 -->
+      <ul class="social-list"></ul>
+    </section>
+
+    <!-- ----- World: 3D globe + repo nodes + fallback list (built in Stage 2 & 3) ----- -->
+    <section id="world" class="world">
+      <h2 class="section-title">&gt; my world</h2>
+
+      <!-- Three.js draws into this container. If Three.js fails to load,
+           globe.js hides this and only the fallback list below shows. -->
+      <div id="globe-container" class="globe-container"></div>
+
+      <!-- Terminal-style popup panel for a clicked repo node. Built in Stage 3. -->
+      <div id="repo-panel" class="repo-panel" hidden></div>
+
+      <!-- Plain list fallback — works with no 3D at all. Filled from repos.js. -->
+      <h3 class="section-subtitle">&gt; repos</h3>
+      <ul id="repo-list" class="repo-list"></ul>
+    </section>
+
+    <!-- ----- Contact (built in Stage 4) ----- -->
+    <section id="contact" class="contact">
+      <h2 class="section-title">&gt; contact</h2>
+      <form id="contact-form" class="contact-form">
+        <!-- Stage 4 fills in the terminal-style fields here -->
+      </form>
+    </section>
+
+    <footer class="site-footer">
+      <p>&copy; <span id="year"></span> jonathan miner</p>
+    </footer>
+  </div>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <!-- Three.js from CDN — the only outside library this site uses.
+       Loaded before globe.js so globe.js can check `window.THREE`. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+
+  <script src="repos.js" defer></script>
+  <script src="intro.js" defer></script>
+  <script src="globe.js" defer></script>
+  <script src="contact.js" defer></script>
+</body>
+</html>
