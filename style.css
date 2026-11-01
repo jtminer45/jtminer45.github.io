@@ -224,8 +224,37 @@ section {
   background: var(--panel-bg);
   border: 1px solid var(--neon);
   box-shadow: var(--glow);
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   z-index: 50;
+}
+
+.repo-panel p {
+  margin-bottom: 0.5rem;
+}
+
+.repo-panel-name {
+  font-weight: 700;
+  padding-right: 1.5rem; /* keep clear of the close button */
+}
+
+.repo-panel-lang {
+  color: var(--neon-dim);
+}
+
+.repo-panel-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: var(--neon-dim);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.repo-panel-close:hover {
+  color: var(--neon);
 }
 
 .repo-list {
