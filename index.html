@@ -60,14 +60,26 @@
       <p class="hero-sub">maths &amp; computer science grad — Jos, Nigeria</p>
     </section>
 
-    <!-- ----- About / Bio (filled in Stage 4) ----- -->
+    <!-- ----- About / Bio ----- -->
     <section id="about" class="about">
       <h2 class="section-title">&gt; about</h2>
+      <!-- EDIT ME: your bio -->
       <p class="bio-text">
-        <!-- EDIT ME: bio text added in Stage 4 -->
+        Jonathan Miner is a Mathematics and Computer Science graduate from Jos,
+        Nigeria, working at the intersection of AI, data and business. He
+        builds practical tools, from machine learning projects to automation
+        for small businesses, and is developing Longon Capital, a data
+        platform for Nigerian markets. His goal is to build useful technology
+        for Nigeria and to grow into AI research.
       </p>
-      <!-- EDIT ME: social links added in Stage 4 -->
-      <ul class="social-list"></ul>
+      <!-- EDIT ME: social links -->
+      <ul class="social-list">
+        <li><a href="https://github.com/jtminer45" target="_blank" rel="noopener noreferrer">github</a></li>
+        <li><a href="https://linkedin.com/in/jonathan-miner-a89385416" target="_blank" rel="noopener noreferrer">linkedin</a></li>
+        <li><a href="https://instagram.com/miner_jr10" target="_blank" rel="noopener noreferrer">instagram</a></li>
+        <li><a href="https://x.com/miner_jr10" target="_blank" rel="noopener noreferrer">x</a></li>
+        <li><a href="mailto:johnnytminer@gmail.com">email</a></li>
+      </ul>
     </section>
 
     <!-- ----- World: my repos, as plain links (built in Stage 3) ----- -->
@@ -79,11 +91,38 @@
       <ul id="repo-list" class="repo-list"></ul>
     </section>
 
-    <!-- ----- Contact (built in Stage 4) ----- -->
+    <!-- ----- Contact ----- -->
     <section id="contact" class="contact">
       <h2 class="section-title">&gt; contact</h2>
-      <form id="contact-form" class="contact-form">
-        <!-- Stage 4 fills in the terminal-style fields here -->
+      <form id="contact-form" class="contact-form" novalidate>
+        <label class="field">
+          <span class="field-label">&gt; name:</span>
+          <input type="text" name="name" id="field-name" autocomplete="name" required />
+        </label>
+
+        <label class="field">
+          <span class="field-label">&gt; email:</span>
+          <input type="email" name="email" id="field-email" autocomplete="email" required />
+        </label>
+
+        <label class="field">
+          <span class="field-label">&gt; message:</span>
+          <textarea name="message" id="field-message" rows="5" required></textarea>
+        </label>
+
+        <!-- Spam trap: real bots tend to fill in every field they see, even
+             ones a human never would. This field is hidden from people with
+             CSS (not type="hidden", which bots often skip on purpose), and
+             contact.js silently drops the submission if it's filled in. -->
+        <label class="honeypot" aria-hidden="true">
+          company
+          <input type="text" name="company" tabindex="-1" autocomplete="off" />
+        </label>
+
+        <button type="submit" class="submit-button">[ send ]</button>
+
+        <!-- contact.js fills this in with a success or error message. -->
+        <p id="form-status" class="form-status" aria-live="polite"></p>
       </form>
     </section>
 

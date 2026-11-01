@@ -260,6 +260,77 @@ section {
   max-width: 500px;
 }
 
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-label {
+  color: var(--neon-dim);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  background: var(--panel-bg);
+  border: 1px solid var(--neon-dim);
+  color: var(--neon);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 0.6rem 0.75rem;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--neon);
+  box-shadow: var(--glow);
+}
+
+/* Spam-trap field: hidden from sighted users (and jumped over by keyboard
+   tab order via tabindex="-1" on the input), but still present in the DOM
+   for bots that blindly fill in every field. */
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.submit-button {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--neon);
+  color: var(--neon);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+  text-shadow: var(--glow);
+}
+
+.submit-button:hover {
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.form-status {
+  min-height: 1.5em;
+}
+
+.form-status-error {
+  color: #ff5577;
+  text-shadow: 0 0 6px rgba(255, 85, 119, 0.8);
+}
+
 /* ===================== FOOTER ===================== */
 .site-footer {
   text-align: center;
@@ -272,5 +343,22 @@ section {
   .site-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  section {
+    padding: 2rem 0;
+  }
+
+  .hero {
+    padding: 2.5rem 0 2rem;
+  }
+
+  .social-list {
+    gap: 1rem;
+  }
+
+  .submit-button {
+    width: 100%;
+    text-align: center;
   }
 }
