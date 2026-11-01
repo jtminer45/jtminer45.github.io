@@ -93,10 +93,9 @@
   </div>
 
   <!-- ===================== SCRIPTS ===================== -->
-  <!-- Three.js from CDN — the only outside library this site uses.
-       Loaded before globe.js so globe.js can check `window.THREE`. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-
+  <!-- Three.js from CDN is loaded dynamically inside globe.js (not here) —
+       that way a slow/blocked CDN can never delay the intro or the rest
+       of the page from loading. See globe.js. -->
   <script src="repos.js" defer></script>
   <script src="intro.js" defer></script>
   <script src="globe.js" defer></script>
