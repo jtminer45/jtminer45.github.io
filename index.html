@@ -2,10 +2,10 @@
 <!--
   index.html
   This is the page structure (the "skeleton") for the whole site.
-  It holds: the intro screen, the header, the main content sections
-  (about/bio, the 3D globe + repo list, and the contact form), and the footer.
-  All real styling lives in style.css. All behavior lives in the .js files,
-  loaded at the bottom of this file.
+  It holds: the intro screen, the full-page background globe, the main
+  content sections (about/bio, repo list, and the contact form), and the
+  footer. All real styling lives in style.css. All behavior lives in the
+  .js files, loaded at the bottom of this file.
 -->
 <html lang="en">
 <head>
@@ -24,6 +24,13 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- ===================== BACKGROUND GLOBE ===================== -->
+  <!-- Three.js draws the rotating Earth (with the Jos beacon) into this
+       container, which sits fixed behind the entire page (see style.css).
+       If Three.js fails to load, globe.js hides this and the plain repo
+       list is all that shows. -->
+  <div id="globe-container" class="globe-container"></div>
+
   <!-- ===================== INTRO SCREEN ===================== -->
   <!-- Full-black overlay that types "> welcome to my world_" then glitches away.
        intro.js controls showing/hiding this. Hidden immediately (via JS) on repeat visits. -->
@@ -63,18 +70,11 @@
       <ul class="social-list"></ul>
     </section>
 
-    <!-- ----- World: 3D globe + repo nodes + fallback list (built in Stage 2 & 3) ----- -->
+    <!-- ----- World: my repos, as plain links (built in Stage 3) ----- -->
     <section id="world" class="world">
       <h2 class="section-title">&gt; my world</h2>
 
-      <!-- Three.js draws into this container. If Three.js fails to load,
-           globe.js hides this and only the fallback list below shows. -->
-      <div id="globe-container" class="globe-container"></div>
-
-      <!-- Terminal-style popup panel for a clicked repo node. Built in Stage 3. -->
-      <div id="repo-panel" class="repo-panel" hidden></div>
-
-      <!-- Plain list fallback — works with no 3D at all. Filled from repos.js. -->
+      <!-- Filled from repos.js: name, brief, and a github link per repo. -->
       <h3 class="section-subtitle">&gt; repos</h3>
       <ul id="repo-list" class="repo-list"></ul>
     </section>

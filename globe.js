@@ -1,21 +1,15 @@
 /*
   globe.js
-  Builds the 3D rotating Earth (Three.js) and the repo orbit nodes, and
-  renders the plain-list fallback for devices/browsers without 3D.
-
-  Built out fully in Stage 2 (globe) and Stage 3 (repo nodes + fallback list).
-  Stage 2 added: a slowly-rotating dotted globe with grid lines, that tilts
-  toward the mouse/finger, plus a pulsing beacon marking Jos, Nigeria.
-  Stage 3 adds: a glowing orbiting node for each repo in repos.js (click or
-  tap one to open the terminal-style detail panel), and a plain fallback
-  list below the globe that reads from the exact same repos.js array.
+  Builds the 3D rotating Earth (Three.js) that sits as a fixed background
+  behind the whole page, and renders the plain repo list that reads from
+  repos.js — the only repo UI on the site.
 */
 
 (function () {
-  // ----- Render the plain fallback list from repos.js -----
-  // This runs now so the list works even before the globe exists, and is
-  // also what devices without 3D fall back to entirely.
-  function renderFallbackList() {
+  // ----- Render the repo list from repos.js -----
+  // Shows each repo's name, brief, and a link (labelled with its language)
+  // straight to the GitHub repo.
+  function renderRepoList() {
     const list = document.getElementById("repo-list");
     if (!list || !window.REPOS) return;
 
@@ -41,81 +35,11 @@
     });
   }
 
-  renderFallbackList();
-
-  // ----- Terminal-style repo detail panel (shared by click and tap) -----
-  // Shows the repo's name, brief, main language, and a GitHub link.
-  // Used by both the 3D orbit nodes below and (later) any other repo UI.
-  function showRepoPanel(repo) {
-    const panel = document.getElementById("repo-panel");
-    if (!panel) return;
-
-    panel.innerHTML = ""; // clear whatever repo was shown last time
-
-    const closeButton = document.createElement("button");
-    closeButton.className = "repo-panel-close";
-    closeButton.textContent = "x";
-    closeButton.setAttribute("aria-label", "close");
-    closeButton.addEventListener("click", function () {
-      panel.hidden = true;
-    });
-
-    const name = document.createElement("p");
-    name.className = "repo-panel-name";
-    name.textContent = "> " + repo.name;
-
-    const brief = document.createElement("p");
-    brief.textContent = repo.brief;
-
-    const lang = document.createElement("p");
-    lang.className = "repo-panel-lang";
-    lang.textContent = "lang: " + repo.lang;
-
-    const link = document.createElement("a");
-    link.href = repo.url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent = "view on github ->";
-
-    panel.appendChild(closeButton);
-    panel.appendChild(name);
-    panel.appendChild(brief);
-    panel.appendChild(lang);
-    panel.appendChild(link);
-    panel.hidden = false;
-  }
-
-  // ----- Build one glowing node per repo, arranged in a ring around the globe -----
-  // Each node's mesh remembers its own repo (in userData) so a click/tap
-  // can look up which repo was hit.
-  function createRepoNodes(orbitRadius, repos, color) {
-    const group = new THREE.Group();
-    const nodes = [];
-
-    repos.forEach(function (repo, index) {
-      const angle = (index / repos.length) * Math.PI * 2;
-
-      const geometry = new THREE.SphereGeometry(0.07, 16, 16);
-      const material = new THREE.MeshBasicMaterial({ color: color });
-      const node = new THREE.Mesh(geometry, material);
-
-      node.position.set(
-        Math.cos(angle) * orbitRadius,
-        Math.sin(angle * 2) * 0.3, // slight vertical offset per node, for variety
-        Math.sin(angle) * orbitRadius
-      );
-      node.userData.repo = repo;
-
-      group.add(node);
-      nodes.push(node);
-    });
-
-    return { group: group, nodes: nodes };
-  }
+  renderRepoList();
 
   // ----- Load Three.js from its CDN, without blocking the rest of the page -----
   // This is done here (instead of a <script> tag in index.html) so that a slow
-  // or unreachable CDN can never delay the intro or the fallback list from
+  // or unreachable CDN can never delay the intro or the repo list from
   // showing up — the globe is a bonus, not a requirement.
   const THREE_JS_CDN_URL =
     "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
@@ -130,8 +54,8 @@
 
   loadThreeJs(initGlobe, function () {
     // Three.js failed to load (offline, CDN blocked, etc).
-    // Hide the (now-empty) globe container and lean on the fallback list above.
-    console.warn("Three.js failed to load; showing fallback repo list only.");
+    // Hide the (now-empty) globe background and lean on the plain repo list.
+    console.warn("Three.js failed to load; showing plain repo list only.");
     const container = document.getElementById("globe-container");
     if (container) container.hidden = true;
   });
@@ -246,8 +170,6 @@
     const AUTO_ROTATE_SPEED = 0.0015; // radians per frame
     const TILT_STRENGTH = 0.4; // how far the globe tilts toward the pointer
     const TILT_EASE = 0.05; // how quickly the tilt catches up (0-1)
-    const ORBIT_RADIUS = GLOBE_RADIUS * 1.6;
-    const ORBIT_SPEED = 0.004; // radians per frame — faster than the globe's own spin
 
     // ----- Scene / camera / renderer -----
     const scene = new THREE.Scene();
@@ -276,28 +198,23 @@
     const beacon = createBeacon(GLOBE_RADIUS, NEON_COLOR);
     spinGroup.add(beacon);
 
-    // Repo nodes orbit in their own group, inside tiltGroup (so they tilt
-    // with the globe) but outside spinGroup (so they orbit at their own speed,
-    // independent of the globe's own spin).
-    const repoOrbit = createRepoNodes(ORBIT_RADIUS, window.REPOS || [], NEON_COLOR);
-    tiltGroup.add(repoOrbit.group);
-
-    // ----- Track the pointer (mouse or finger) over the globe container -----
-    // Position is stored as normalized values from -1 to 1.
+    // ----- Track the pointer (mouse or finger) across the whole page -----
+    // The globe is now a full-page background, so the pointer is tracked on
+    // the window, not just the globe's own container. Position is stored as
+    // normalized values from -1 to 1.
     let pointerX = 0;
     let pointerY = 0;
 
     function setPointerFromClient(clientX, clientY) {
-      const rect = container.getBoundingClientRect();
-      pointerX = ((clientX - rect.left) / rect.width) * 2 - 1;
-      pointerY = ((clientY - rect.top) / rect.height) * 2 - 1;
+      pointerX = (clientX / window.innerWidth) * 2 - 1;
+      pointerY = (clientY / window.innerHeight) * 2 - 1;
     }
 
-    container.addEventListener("mousemove", function (event) {
+    window.addEventListener("mousemove", function (event) {
       setPointerFromClient(event.clientX, event.clientY);
     });
 
-    container.addEventListener(
+    window.addEventListener(
       "touchmove",
       function (event) {
         if (event.touches.length > 0) {
@@ -307,37 +224,12 @@
       { passive: true }
     );
 
-    // When the pointer leaves, ease the globe back to a neutral tilt.
-    container.addEventListener("mouseleave", function () {
-      pointerX = 0;
-      pointerY = 0;
-    });
-
-    // ----- Clicking/tapping a repo node opens the detail panel -----
-    // "click" fires for both a mouse click and a tap, so one listener
-    // handles desktop and mobile.
-    const raycaster = new THREE.Raycaster();
-    const clickPoint = new THREE.Vector2();
-
-    renderer.domElement.addEventListener("click", function (event) {
-      const rect = renderer.domElement.getBoundingClientRect();
-      clickPoint.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      clickPoint.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-      raycaster.setFromCamera(clickPoint, camera);
-      const hits = raycaster.intersectObjects(repoOrbit.nodes);
-      if (hits.length > 0) {
-        showRepoPanel(hits[0].object.userData.repo);
-      }
-    });
-
     // ----- Animation loop -----
     function animate() {
       requestAnimationFrame(animate);
 
       // Slow constant spin.
       spinGroup.rotation.y += AUTO_ROTATE_SPEED;
-      repoOrbit.group.rotation.y += ORBIT_SPEED;
 
       // Ease the tilt toward the pointer position (instead of snapping to it).
       const targetTiltX = pointerY * TILT_STRENGTH;
@@ -354,10 +246,10 @@
     }
     animate();
 
-    // ----- Keep the canvas sized to its container on window resize -----
+    // ----- Keep the canvas sized to the window on resize -----
     window.addEventListener("resize", function () {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);

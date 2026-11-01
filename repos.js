@@ -1,29 +1,74 @@
 /*
   repos.js
   The single source of truth for the repo list shown on the site.
-  Both the 3D globe (globe.js, as orbiting nodes) and the plain fallback
-  list read from this same REPOS array, so you only ever add a repo here.
+  This plain fallback list reads from this REPOS array — it's the only
+  repo UI on the site now (no 3D nodes).
 */
 
 // EDIT ME: add/remove repo entries here. Each one looks like:
 // { name: "repo-name", brief: "short description", url: "https://github.com/...", lang: "Python" }
+// Entries pulled straight from github.com/jtminer45 — several repos have no
+// description set on GitHub yet, so their "brief" below is a placeholder.
+// EDIT ME: replace each placeholder brief with a real one-line description.
 window.REPOS = [
   {
-    name: "longon-capital",
-    brief: "NGX analytics platform",
-    url: "https://github.com/jtminer45/longon-capital",
+    name: "microwave-quant",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/microwave-quant",
+    lang: "TypeScript",
+  },
+  {
+    name: "PowerLens",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/PowerLens",
+    lang: "Jupyter Notebook",
+  },
+  {
+    name: "colonels-pos",
+    brief: "Colonel's Bakery and Restaurant — POS & management system",
+    url: "https://github.com/jtminer45/colonels-pos",
     lang: "Python",
   },
   {
-    name: "ml-sandbox",
-    brief: "Experiments with small machine learning models",
-    url: "https://github.com/jtminer45/ml-sandbox",
-    lang: "Python",
+    name: "derivative-pricing",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/derivative-pricing",
+    lang: "Jupyter Notebook",
   },
   {
-    name: "shop-automation",
-    brief: "Automation tools for small businesses",
-    url: "https://github.com/jtminer45/shop-automation",
-    lang: "JavaScript",
+    name: "ngx-predictor",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/ngx-predictor",
+    lang: "Jupyter Notebook",
+  },
+  {
+    name: "house-price-predictor",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/house-price-predictor",
+    lang: "Jupyter Notebook",
+  },
+  {
+    name: "house-price-api",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/house-price-api",
+    lang: "HTML",
+  },
+  {
+    name: "energy-anomaly-dectector",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/energy-anomaly-dectector",
+    lang: "Jupyter Notebook",
+  },
+  {
+    name: "PyTorch_fundamentals",
+    brief: "EDIT ME: add a one-line description",
+    url: "https://github.com/jtminer45/PyTorch_fundamentals",
+    lang: "Jupyter Notebook",
+  },
+  {
+    name: "python-fundamentals",
+    brief: "python to PyTorch here we go",
+    url: "https://github.com/jtminer45/python-fundamentals",
+    lang: "Jupyter Notebook",
   },
 ];
