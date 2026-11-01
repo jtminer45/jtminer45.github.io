@@ -66,6 +66,14 @@ h3 {
   z-index: 100;
 }
 
+/* Without this, setting the "hidden" attribute in JS does nothing visually —
+   ".intro-screen { display: flex }" above and the browser's built-in
+   "[hidden] { display: none }" rule have equal specificity, and ours would
+   otherwise win the tie-break just by being an author stylesheet. */
+.intro-screen[hidden] {
+  display: none;
+}
+
 .intro-text {
   font-size: 1.5rem;
   color: var(--neon);

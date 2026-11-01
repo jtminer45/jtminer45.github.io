@@ -2,8 +2,9 @@
   intro.js
   Runs the one-time typing intro screen: types "> welcome to my world_",
   holds for a second, glitches, then reveals the main site.
-  Also wires up the "skip" button, and remembers (via localStorage) that
-  the visitor has already seen the intro so it doesn't replay on repeat visits.
+  Also wires up the "enter" button (skips straight to the main site), and
+  remembers (via localStorage) that the visitor has already seen the intro
+  so it doesn't replay on repeat visits.
 */
 
 (function () {
