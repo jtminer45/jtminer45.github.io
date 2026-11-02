@@ -32,8 +32,9 @@
   <div id="globe-container" class="globe-container"></div>
 
   <!-- ===================== INTRO SCREEN ===================== -->
-  <!-- Full-black overlay that types "> welcome to my world_" then glitches away.
-       intro.js controls showing/hiding this. Hidden immediately (via JS) on repeat visits. -->
+  <!-- Full-black overlay that types "> welcome to my world" then a blinking "_" cursor.
+       Always shown on page load (every visit, not just the first) — intro.js only hides
+       this once the visitor clicks "enter". -->
   <div id="intro-screen" class="intro-screen">
     <p id="intro-text" class="intro-text" aria-live="polite"></p>
     <button id="intro-skip" class="intro-skip">enter</button>

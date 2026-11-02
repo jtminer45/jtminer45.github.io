@@ -9,10 +9,14 @@
 :root {
   --bg: #000000;              /* EDIT ME: page background color */
   --neon: #00e5ff;            /* EDIT ME: main neon-blue text/accent color */
-  --neon-dim: #007a8a;        /* a dimmer version of neon, for secondary text */
-  --glow: 0 0 6px rgba(0, 229, 255, 0.8), 0 0 16px rgba(0, 229, 255, 0.5);
+  --neon-rgb: 0, 229, 255;    /* same color as --neon, as r,g,b for use inside rgba() */
+  --neon-dim: #008c9e;        /* a dimmer version of neon for secondary text — kept bright
+                                  enough to pass WCAG AA contrast on black (~5.25:1) */
+  --glow: 0 0 6px rgba(var(--neon-rgb), 0.8), 0 0 16px rgba(var(--neon-rgb), 0.5);
   --font-mono: "JetBrains Mono", monospace;
   --panel-bg: #050505;        /* slightly-off-black for panels, so they read on pure black */
+  --error: #ff5577;           /* form validation error color */
+  --error-rgb: 255, 85, 119;  /* same color as --error, as r,g,b for use inside rgba() */
 }
 
 /* ===================== RESET / BASE ===================== */
@@ -75,7 +79,7 @@ h3 {
 }
 
 .intro-text {
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 5vw, 1.5rem); /* shrinks on narrow screens so it can't overflow */
   color: var(--neon);
   text-shadow: var(--glow);
   white-space: pre;
@@ -231,7 +235,10 @@ section {
    Fixed to the viewport (not inside .globe-container, which is dimmed
    with opacity for the globe's look — this stays at full strength).
    globe.js repositions it (left/top) every frame to track the beacon's
-   on-screen position. */
+   on-screen position.
+   z-index: 2 (above .main-content's z-index: 1) so it stays visible as a
+   HUD-style label even if its tracked position happens to land under a
+   foreground panel while the page is scrolled. */
 .jos-label {
   position: fixed;
   top: 0;
@@ -242,7 +249,7 @@ section {
   text-shadow: var(--glow);
   white-space: nowrap;
   pointer-events: none;
-  z-index: 0;
+  z-index: 2;
 }
 
 /* ===================== WORLD (repos) ===================== */
@@ -264,7 +271,7 @@ section {
 .repo-link:hover {
   border-color: var(--neon);
   text-decoration: none;
-  background: rgba(0, 229, 255, 0.08);
+  background: rgba(var(--neon-rgb), 0.08);
 }
 
 /* ===================== CONTACT ===================== */
@@ -329,7 +336,7 @@ section {
 }
 
 .submit-button:hover {
-  background: rgba(0, 229, 255, 0.1);
+  background: rgba(var(--neon-rgb), 0.1);
 }
 
 .submit-button:disabled {
@@ -342,8 +349,8 @@ section {
 }
 
 .form-status-error {
-  color: #ff5577;
-  text-shadow: 0 0 6px rgba(255, 85, 119, 0.8);
+  color: var(--error);
+  text-shadow: 0 0 6px rgba(var(--error-rgb), 0.8);
 }
 
 /* ===================== FOOTER ===================== */

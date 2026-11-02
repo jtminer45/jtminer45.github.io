@@ -159,6 +159,8 @@
     // EDIT ME: tweak these to change the globe's look and feel.
     const GLOBE_RADIUS = 1.5;
     const DOT_COUNT = 900;
+    // Three.js colors can't read CSS variables, so this is a plain hex
+    // constant — if you change --neon in style.css, update this to match.
     const NEON_COLOR = 0x00e5ff;
     const AUTO_ROTATE_SPEED = 0.0015; // radians per frame
     const TILT_STRENGTH = 0.4; // how far the globe tilts toward the pointer
@@ -249,7 +251,10 @@
 
       // ----- Keep the "jos" label glued to the beacon's screen position -----
       // Always tracks the beacon, even when it's rotated to the far side
-      // of the globe.
+      // of the globe. tiltGroup's matrixWorld is updated explicitly here
+      // (rather than waiting for renderer.render below) so the label uses
+      // this frame's rotation, not a stale one from the previous frame.
+      tiltGroup.updateMatrixWorld(true);
       beacon.getWorldPosition(beaconWorldPos);
       const screenPos = beaconWorldPos.clone().project(camera);
       const x = (screenPos.x * 0.5 + 0.5) * window.innerWidth;
