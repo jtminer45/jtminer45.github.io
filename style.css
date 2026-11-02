@@ -228,19 +228,21 @@ section {
 }
 
 /* "jos" label that follows the pulsing beacon on the globe.
+   Fixed to the viewport (not inside .globe-container, which is dimmed
+   with opacity for the globe's look — this stays at full strength).
    globe.js repositions it (left/top) every frame to track the beacon's
-   on-screen position, and fades it out when Jos rotates to the far side. */
+   on-screen position. */
 .jos-label {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   transform: translate(-50%, -160%);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--neon);
   text-shadow: var(--glow);
   white-space: nowrap;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  z-index: 0;
 }
 
 /* ===================== WORLD (repos) ===================== */

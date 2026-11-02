@@ -192,12 +192,15 @@
     spinGroup.add(beacon);
 
     // ----- "jos" label that tracks the beacon's position on screen -----
-    // This is a plain HTML element layered over the canvas (not a 3D
-    // object), repositioned every frame to follow the beacon as it moves.
+    // This is a plain HTML element (not a 3D object), repositioned every
+    // frame to follow the beacon as it moves. It's appended to <body>
+    // rather than the globe container, since the container is dimmed
+    // (opacity) for the globe's look — appending there would dim the
+    // label too.
     const josLabel = document.createElement("div");
     josLabel.className = "jos-label";
     josLabel.textContent = "jos";
-    container.appendChild(josLabel);
+    document.body.appendChild(josLabel);
     const beaconWorldPos = new THREE.Vector3(); // reused each frame below
 
     // ----- Track the pointer (mouse or finger) across the whole page -----
@@ -245,26 +248,14 @@
       beacon.material.opacity = 0.5 + pulse * 0.5;
 
       // ----- Keep the "jos" label glued to the beacon's screen position -----
+      // Always tracks the beacon, even when it's rotated to the far side
+      // of the globe.
       beacon.getWorldPosition(beaconWorldPos);
-
-      // The beacon sits on a sphere centered at the world origin, so its own
-      // world position also doubles as the globe's outward surface normal
-      // there. If that normal points away from the camera, Jos is currently
-      // on the far side of the globe — hide the label instead of letting it
-      // float in front of the globe.
-      const towardCamera = camera.position.clone().sub(beaconWorldPos);
-      const isFacingCamera = beaconWorldPos.dot(towardCamera) > 0;
-
-      if (isFacingCamera) {
-        const screenPos = beaconWorldPos.clone().project(camera);
-        const x = (screenPos.x * 0.5 + 0.5) * container.clientWidth;
-        const y = (-screenPos.y * 0.5 + 0.5) * container.clientHeight;
-        josLabel.style.left = x + "px";
-        josLabel.style.top = y + "px";
-        josLabel.style.opacity = "1";
-      } else {
-        josLabel.style.opacity = "0";
-      }
+      const screenPos = beaconWorldPos.clone().project(camera);
+      const x = (screenPos.x * 0.5 + 0.5) * window.innerWidth;
+      const y = (-screenPos.y * 0.5 + 0.5) * window.innerHeight;
+      josLabel.style.left = x + "px";
+      josLabel.style.top = y + "px";
 
       renderer.render(scene, camera);
     }
