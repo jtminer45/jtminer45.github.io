@@ -81,13 +81,10 @@ h3 {
   white-space: pre;
 }
 
-/* Blinking cursor, added after the typed text by intro.js */
+/* Blinking "_" cursor, added after the typed text by intro.js */
 .intro-cursor {
-  display: inline-block;
-  width: 0.6em;
-  background: var(--neon);
-  box-shadow: var(--glow);
-  margin-left: 2px;
+  color: var(--neon);
+  text-shadow: var(--glow);
   animation: blink 1s steps(1) infinite;
 }
 

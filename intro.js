@@ -1,13 +1,15 @@
 /*
   intro.js
-  Runs the typing intro screen on every visit: types "> welcome to my world_",
-  then waits for the visitor to click "enter" before glitching into the main
-  site. The homepage never appears automatically — a click is required.
+  Runs the typing intro screen on every visit: types "> welcome to my world",
+  followed by a blinking "_" cursor, then waits for the visitor to click
+  "enter" before glitching into the main site. The homepage never appears
+  automatically — a click is required.
 */
 
 (function () {
   // EDIT ME: change this line if you want the intro to type something else
-  const INTRO_LINE = "> welcome to my world_";
+  // (the blinking "_" cursor is added automatically after this text).
+  const INTRO_LINE = "> welcome to my world";
 
   const introScreen = document.getElementById("intro-screen");
   const introText = document.getElementById("intro-text");
@@ -29,9 +31,10 @@
   function typeIntro() {
     let charIndex = 0;
 
-    // Blinking cursor element, appended after the typed characters.
+    // Blinking "_" cursor, appended after the typed characters.
     const cursor = document.createElement("span");
     cursor.className = "intro-cursor";
+    cursor.textContent = "_";
 
     function typeNextChar() {
       if (charIndex < INTRO_LINE.length) {
