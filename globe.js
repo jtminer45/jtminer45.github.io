@@ -191,6 +191,15 @@
     const beacon = createBeacon(GLOBE_RADIUS, NEON_COLOR);
     spinGroup.add(beacon);
 
+    // ----- "jos" label that tracks the beacon's position on screen -----
+    // This is a plain HTML element layered over the canvas (not a 3D
+    // object), repositioned every frame to follow the beacon as it moves.
+    const josLabel = document.createElement("div");
+    josLabel.className = "jos-label";
+    josLabel.textContent = "jos";
+    container.appendChild(josLabel);
+    const beaconWorldPos = new THREE.Vector3(); // reused each frame below
+
     // ----- Track the pointer (mouse or finger) across the whole page -----
     // The globe is now a full-page background, so the pointer is tracked on
     // the window, not just the globe's own container. Position is stored as
@@ -234,6 +243,28 @@
       const pulse = 0.6 + Math.sin(performance.now() * 0.004) * 0.4;
       beacon.scale.setScalar(0.7 + pulse * 0.6);
       beacon.material.opacity = 0.5 + pulse * 0.5;
+
+      // ----- Keep the "jos" label glued to the beacon's screen position -----
+      beacon.getWorldPosition(beaconWorldPos);
+
+      // The beacon sits on a sphere centered at the world origin, so its own
+      // world position also doubles as the globe's outward surface normal
+      // there. If that normal points away from the camera, Jos is currently
+      // on the far side of the globe — hide the label instead of letting it
+      // float in front of the globe.
+      const towardCamera = camera.position.clone().sub(beaconWorldPos);
+      const isFacingCamera = beaconWorldPos.dot(towardCamera) > 0;
+
+      if (isFacingCamera) {
+        const screenPos = beaconWorldPos.clone().project(camera);
+        const x = (screenPos.x * 0.5 + 0.5) * container.clientWidth;
+        const y = (-screenPos.y * 0.5 + 0.5) * container.clientHeight;
+        josLabel.style.left = x + "px";
+        josLabel.style.top = y + "px";
+        josLabel.style.opacity = "1";
+      } else {
+        josLabel.style.opacity = "0";
+      }
 
       renderer.render(scene, camera);
     }
